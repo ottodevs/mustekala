@@ -1,0 +1,27 @@
+#!/bin/bash
+
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+if [ ! -d "$GOPATH/src/github.com/ethereum/go-ethereum" ]; then
+	echo "You need to have the directory \$GOPATH/src/github.com/ethereum/go-ethereum" in your machine!
+	exit
+fi
+
+echo -e "\nDeleting and creating \$GOPATH/src/github.com/ethereum/go-ethereum/mustekala"
+rm -rf $GOPATH/src/github.com/ethereum/go-ethereum/mustekala
+mkdir $GOPATH/src/github.com/ethereum/go-ethereum/mustekala
+
+echo -e "\nDeleting and creating \$GOPATH/src/github.com/ethereum/go-ethereum/cmd/mustekala"
+rm -rf $GOPATH/src/github.com/ethereum/go-ethereum/cmd/mustekala
+mkdir $GOPATH/src/github.com/ethereum/go-ethereum/cmd/mustekala
+
+echo -e "\nCopying the files from the patch"
+cp $CURRENT_DIR/patch/lib/* $GOPATH/src/github.com/ethereum/go-ethereum/mustekala
+cp $CURRENT_DIR/patch/cmd/* $GOPATH/src/github.com/ethereum/go-ethereum/cmd/mustekala
+
+echo -e "\nCompile mustekala"
+cd $GOPATH/src/github.com/ethereum/go-ethereum/
+build/env.sh go run build/ci.go install ./cmd/mustekala
+
+echo -e "\nWe are set, just execute \$GOPATH/src/github.com/ethereum/go-ethereum/build/bin/mustekala"
+
