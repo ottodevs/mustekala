@@ -55,10 +55,6 @@ func StartDiscoveryServer() {
 	select {}
 }
 
-func DiscoveryLevelDB() *leveldb.DB {
-	return levelDBInstance
-}
-
 // Based on the network given, it will get the bootnodes configured
 // in params/bootnodes.go
 // TODO
