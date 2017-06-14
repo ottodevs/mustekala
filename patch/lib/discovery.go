@@ -2,6 +2,7 @@ package mustekala
 
 import (
 	"net"
+	"os"
 	"reflect"
 	"unsafe"
 
@@ -43,16 +44,14 @@ func SetupDiscoveryServer(config *Config) {
 func StartDiscoveryServer() {
 	if err := discoveryServer.Start(); err != nil {
 		log.Error("Unable to setup the discovery server", "err", err)
+		os.Exit(1)
 	}
 
 	log.Info("Discovery Server Started")
 
-	// Use the hack to get the pointer (and thread) of that levelDB instance
+	// Use this hack to get the pointer (and thread) of that levelDB instance
 	// and be able to access to the discovered nodes
 	levelDBInstance = getLevelDBInstance()
-
-	// Block here to let the server run
-	select {}
 }
 
 // Based on the network given, it will get the bootnodes configured
