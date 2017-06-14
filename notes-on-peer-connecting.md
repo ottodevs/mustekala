@@ -30,3 +30,16 @@ Date:   Mon May 29 11:42:48 2017 +0300
   * If the length of running tasks is lesser than the constant `maxActiveDialTasks`, then the method of the task `Do()` (in `p2p/dial.go:270`) is kicked in.
   * ... And the task added to the `runningTasks` slide.
 * `Do()` will deal with the actual dial, defined in `dial()`, in `p2p/dial.go:320`.
+* If the actual dial succeeds, we pass to the following stage, `setupConn()` (`p2p/server.go:677`), invoked in `p2p/dial.go:326`.
+
+* The documentation of `setupConn` says
+
+```go
+// setupConn runs the handshakes and attempts to add the connection
+// as a peer. It returns when the connection has been added as a peer
+// or the handshakes have failed.
+```
+
+## Setting up the connection after dialing: Encrypted Handshake
+
+(TODO)
