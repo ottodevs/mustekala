@@ -15,7 +15,7 @@ Date:   Mon May 29 11:42:48 2017 +0300
     cmd, core, eth: configurable txpool parameters
 ```
 
-## Preliminars
+## Preliminaries
 
 * Server starts at `Start()` in `p2p/server.go:344`
   * It invokes `run()` (at `p2p/server.go:417`) as a _goroutine_.
