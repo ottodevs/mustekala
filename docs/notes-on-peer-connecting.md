@@ -1,6 +1,7 @@
 # Notes on the Peer Connecting Process of the p2p library
 
-Rough notes taken on the process of connecting to a p2p node.
+Rough notes taken on the process of connecting and communicating to a p2p node
+using the libraries found in `geth`.
 
 ## Geth version
 
@@ -31,7 +32,6 @@ Date:   Mon May 29 11:42:48 2017 +0300
   * ... And the task added to the `runningTasks` slide.
 * `Do()` will deal with the actual dial, defined in `dial()`, in `p2p/dial.go:320`.
 * If the actual dial succeeds, we pass to the following stage, `setupConn()` (`p2p/server.go:677`), invoked in `p2p/dial.go:326`.
-
 * The documentation of `setupConn` says
 
 ```go
@@ -41,5 +41,17 @@ Date:   Mon May 29 11:42:48 2017 +0300
 ```
 
 ## Setting up the connection after dialing: Encrypted Handshake
+
+(TODO)
+
+## Setting up the connection after dialing: Protocol Handshake
+
+(TODO)
+
+## Your connected peer loops
+
+(TODO)
+
+## Talking with your peer: The ethereum sub-protocol
 
 (TODO)
