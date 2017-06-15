@@ -42,7 +42,17 @@ Date:   Mon May 29 11:42:48 2017 +0300
 
 ## Setting up the connection after dialing: Encrypted Handshake
 
-(TODO)
+* After a dial is successful in `dial()` (`p2p/dial.go:320`), `setupConn()` (`p2p/server.go:677`) is invoked.
+* A new object `conn` (`p2p/server.go:190`) is created.
+  * `conn` wraps a network connection with information gathered during the two handshakes.
+* The function will try an encryption handshake `doEncHandshake()` (`p2p/rplx.go:163`)
+  * Which in turn calls `initiatorEncHandshake()` (`p2p/rlpx.go:268`).
+* `initiatorEncHandshake()` will package and seal an "`authPacket`" (a `[]byte`) and will send it over the wire.
+* When the response has been received, `encHandshake.secrets()` (`p2p/rlpx:227`) is invoked.
+  * Getting in response a `secrets` object (`p2p/rlpx.go:195`), which is returned in turn.
+* This `secrets` object is delivered to `newRLPXFrameRW()` (`p2p/rlpx.go:561`)
+  * Which returns an `rlpxFrameRW` (`p2p/rlpx.go:551`) object, an encapsulation of the `conn` alongside encrypting elements.
+* Finaly the flow is restored to the function `setupConn()`
 
 ## Setting up the connection after dialing: Protocol Handshake
 
