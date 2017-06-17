@@ -52,13 +52,35 @@ Date:   Mon May 29 11:42:48 2017 +0300
   * Getting in response a `secrets` object (`p2p/rlpx.go:195`), which is returned in turn.
 * This `secrets` object is delivered to `newRLPXFrameRW()` (`p2p/rlpx.go:561`)
   * Which returns an `rlpxFrameRW` (`p2p/rlpx.go:551`) object, an encapsulation of the `conn` alongside encrypting elements.
-* Finaly the flow is restored to the function `setupConn()`
+* Finally the flow is restored to the function `setupConn()`
+  * Two checks are made afterwards:
+    * Public ID match between the obtained one after the encrypted handshake, and the node's one in memory.
+    * Whether an error happened deliverying the `Server.checkpoint()` (`p2p/server.go:737`)
+      * Notifying the `run()` loop (see above) that the node is in a _posthandshake_ status.
 
 ## Setting up the connection after dialing: Protocol Handshake
 
-(TODO)
+Is time for the protocol handshake!
 
-## Your connected peer loops
+* This flow is following next to the encryption handshake, described above, inside the function `setupConn()`.
+  * The function `doProtoHandshake()` (`p2p/rlpx.go:116`) is invoked at this point in the line (`p2p/server.go:707`).
+* According with the in-code documentation, _the protocol handshake is the first authenticated message_.
+* Two concurrent operations are performed:
+  * `Send()` (`p2p/message.go:92`): Sends the _handshake_ message over the pipe.
+  * `readProtocolHandshake()` (`p2p/rlpx.go:133`): Which invokes `rlpxFrameRW.ReadMsg()` (`p2p.rlpx.go:625`),
+    * which does the actual processing of the received message.i
+    * After parsing this message, `readProtocolHandshake()`, will determine whether the protocol handshake worked or not.
+* `doProtoHandshake()`, having found no error, returns _their_ handshake to `setupConn()`.
+* Following that, the `id` of the peer is verified, alongside their _capabilities_.
+* Finally, the `server.checkpoint()` (`p2p/server.go:737`) is called, and `run()` should be invoking `addPeer()`
+
+## Adding the peer
+
+* Inside `run()` in the `<-srv.addPeer` case (`p2p/server.go:540`), `protoHandshakeChecks()` (`p2p/server.go:587`) is invoked.
+  * After checking that this peer has matching protocols, the peer is finally added with `runPeer()` (`p2p/server.go:754`).
+* `RunPeer()` calls the goroutine `peer.run()` (`p2p/peer.go:143`), which will be notated below.
+
+## Your connected peer loop
 
 (TODO)
 
