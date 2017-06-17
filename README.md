@@ -4,7 +4,7 @@ Ethereum Network Status PoC
 
 ## Overview
 
-Mustekala is a patch of `go-ethereum`, to assist the client on obtaining
+Mustekala is a patch for `go-ethereum`, to assist the client on obtaining
 information about the ethereum network.
 
 ### What information can I get from musteka.la
@@ -52,7 +52,6 @@ $GOPATH/src/github.com/ethereum/go-ethereumbuild/bin/mustekala
 
 ### Options
 
-* `database`: Path of your levelDB discovery database. Default is `$HOME/.mustekala`.
 * `network`: Where to get your bootnodes from params. Default is `mainnet`. 
 * `verbosity`: log verbosity (0-9).
 * `vmodule`: log verbosity pattern.
