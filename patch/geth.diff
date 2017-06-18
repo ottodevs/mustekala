@@ -1,13 +1,31 @@
 diff --git a/p2p/discover/udp.go b/p2p/discover/udp.go
-index f9eb99e..7e5a160 100644
+index f9eb99e..53c9c1a 100644
 --- a/p2p/discover/udp.go
 +++ b/p2p/discover/udp.go
-@@ -211,7 +211,7 @@ type reply struct {
+@@ -34,6 +34,11 @@ import (
+ 
+ const Version = 4
+ 
++// Channel of discovered nodes, to be consumed by the
++// mustekala app. It can only be instantiated if the p2p.server.Config
++// field Mustekala is set to true.
++var mustekalaDiscoveredCh chan *Node
++
+ // Errors
+ var (
+ 	errPacketTooSmall   = errors.New("too small")
+@@ -211,7 +216,13 @@ type reply struct {
  }
  
  // ListenUDP returns a new table that listens for UDP packets on laddr.
 -func ListenUDP(priv *ecdsa.PrivateKey, laddr string, natm nat.Interface, nodeDBPath string, netrestrict *netutil.Netlist) (*Table, error) {
 +func ListenUDP(priv *ecdsa.PrivateKey, laddr string, natm nat.Interface, nodeDBPath string, netrestrict *netutil.Netlist, mustekala bool) (*Table, error) {
++	// The channel below only can be activated if the parameter is delivered as true,
++	// to avoid the hook to block the complete flow of the discovery process
++	if mustekala {
++		mustekalaDiscoveredCh = make(chan *Node)
++	}
++
  	addr, err := net.ResolveUDPAddr("udp", laddr)
  	if err != nil {
  		return nil, err
