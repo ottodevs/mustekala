@@ -19,6 +19,7 @@ func SetupInquirer(config *Config) {
 
 	// Build a new p2pserver
 	p2pConfig := &p2p.Config{
+		Mustekala:       true, // This flag enables the instantiation of channels to inquire for the statuses of nodes.
 		Name:            "Mustekala",
 		NodeDatabase:    "", // Use the ethdb memory database for the nodes
 		PrivateKey:      nodekey,

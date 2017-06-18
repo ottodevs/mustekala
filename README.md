@@ -11,6 +11,7 @@ information about the ethereum network.
 
 * List of discovered nodes
 * Status of connection of these nodes
+  * Node Discovered
   * TCP Dial failed
   * Encryption Handshake failed
   * Protocol Handshake failed

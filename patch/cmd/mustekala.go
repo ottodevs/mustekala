@@ -28,14 +28,15 @@ func main() {
 	// There are two components in this application running in parallel
 	//
 	// * Inquirer
-	//     Runs the geth p2p server filling a levelDB with discovered nodes
-	//     Tries to connect to the discovered servers using the p2p library,
-	//     classifying them into the following categories:
-	//       - TCP Dial failed
-	//       - Encryption Handshake failed
-	//       - Protocol Handshake failed
-	//       - Get Status failed
-	//       - Get Status succeed
+	//     - Runs the geth p2p server filling an ethdb.MemDatabase with discovered nodes.
+	//     - Tries to connect to the discovered servers using the p2p library,
+	//       classifying them into the following categories:
+	//         - Node discovered
+	//         - TCP Dial failed
+	//         - Encryption Handshake failed
+	//         - Protocol Handshake failed
+	//         - Get Status failed
+	//         - Get Status succeed
 	// * API
 	//    HTTP JSON API. Serves the following requests:
 	//      - /discovered-nodes

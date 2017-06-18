@@ -1,0 +1,37 @@
+diff --git a/p2p/discover/udp.go b/p2p/discover/udp.go
+index f9eb99e..7e5a160 100644
+--- a/p2p/discover/udp.go
++++ b/p2p/discover/udp.go
+@@ -211,7 +211,7 @@ type reply struct {
+ }
+ 
+ // ListenUDP returns a new table that listens for UDP packets on laddr.
+-func ListenUDP(priv *ecdsa.PrivateKey, laddr string, natm nat.Interface, nodeDBPath string, netrestrict *netutil.Netlist) (*Table, error) {
++func ListenUDP(priv *ecdsa.PrivateKey, laddr string, natm nat.Interface, nodeDBPath string, netrestrict *netutil.Netlist, mustekala bool) (*Table, error) {
+ 	addr, err := net.ResolveUDPAddr("udp", laddr)
+ 	if err != nil {
+ 		return nil, err
+diff --git a/p2p/server.go b/p2p/server.go
+index d7909d5..29af210 100644
+--- a/p2p/server.go
++++ b/p2p/server.go
+@@ -57,6 +57,10 @@ var errServerStopped = errors.New("server stopped")
+ 
+ // Config holds Server options.
+ type Config struct {
++	// This field, when true, set ups the instantiation of channels
++	// to be fed with node status information
++	Mustekala bool
++
+ 	// This field must be set to a valid secp256k1 private key.
+ 	PrivateKey *ecdsa.PrivateKey `toml:"-"`
+ 
+@@ -371,7 +375,7 @@ func (srv *Server) Start() (err error) {
+ 
+ 	// node table
+ 	if !srv.NoDiscovery {
+-		ntab, err := discover.ListenUDP(srv.PrivateKey, srv.ListenAddr, srv.NAT, srv.NodeDatabase, srv.NetRestrict)
++		ntab, err := discover.ListenUDP(srv.PrivateKey, srv.ListenAddr, srv.NAT, srv.NodeDatabase, srv.NetRestrict, srv.Mustekala)
+ 		if err != nil {
+ 			return err
+ 		}

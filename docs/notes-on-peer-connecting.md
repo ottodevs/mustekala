@@ -22,6 +22,10 @@ Date:   Mon May 29 11:42:48 2017 +0300
   * It invokes `run()` (at `p2p/server.go:417`) as a _goroutine_.
     * `run()` resides at `p2p/server.go:451`. It persists a `for` loop.
 
+## Where does the discovery happen?
+
+* The discovered node is added to the database in `updateNode()` (`p2p/discovery/database.go:194`).
+
 ## Adding a dial task
 
 * The _adding of new dial tasks_ happens in `scheduleTasks()`, invoked at `p2p/server.go:499` and defined at `p2p/server.go:487`.
